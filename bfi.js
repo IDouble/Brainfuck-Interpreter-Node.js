@@ -3,24 +3,22 @@
 var readline = require('readline');
 var readlineModul = readline.createInterface({input: process.stdin,output: process.stdout});
 
-var BrainFuckInterpreter = {
-	cells:[],
-	cellLength:30000,
-	userinput:null,
-	actualCellPosition: 0,
-	isOptionalInput:false,
-	optionalInput:"",
-	loopCount:new Array(),
-	globalInkrement:0,
-
-	init:function() {
+var BrainFuckInterpreter = function() {
+	//private 
+	var cells = [];
+	var cellLength = 30000;
+	var userInput = null;
+	var actualCellPosition = 0;
+	var isOptionalInput = false;
+	var optionalInput = "";
+	var loopCount = new Array();
+	var globalInkrement = 0;
 	//cells abfüllen (normal : 30000)
-		for (var i = 0 ; i < cellLength; i++) {
-			cells[i] = 0;
-		}
-	},
+	for (var i = 0 ; i < cellLength; i++) {
+		cells[i] = 0;
+	};
 	//Check Methode damit eine Zelle nicht negativ sein kann oder drüber
-	checkCell: function(cell){
+	function checkCell(cell){
 		try{
 			if (cell < 0){
 				cell = 255;
@@ -32,9 +30,9 @@ var BrainFuckInterpreter = {
 		}catch(e){
 			console.log("checkCell : " + e);
 		}
-	},
+	}
 	//Check Methode für actualCell,damit sie nicht negativ sein kann oder drüber
-	checkActualCellPosition: function(){
+	function checkActualCellPosition(){
 		try{
 			if (actualCellPosition < 0){
 				actualCellPosition = cellLength - 1;
@@ -45,9 +43,9 @@ var BrainFuckInterpreter = {
 		}catch(e){
 			console.log("checkActualCellPosition : " + e);
 		}
-	},
+	}
 	//Holt die User Eingabe
-	makeInput: function(){
+	function makeInput(){
 		try{
 			readlineModul.question("", function(answer) {
 				userInput = answer;
@@ -57,21 +55,21 @@ var BrainFuckInterpreter = {
 		}catch(e){
 			console.log("makeInput : " + e);
 		}
-	},
+	}
 	//überprüft die User Eingabe
-	checkInput: function(){
+	function checkInput(){
 		try{
 			while(globalInkrement < userInput.length){
 				globalInkrement = checkChar(globalInkrement);
-				console.log("act: " + globalInkrement);
+				//console.log("act: " + globalInkrement);
 			}
 			makeInput();
 		}catch(e){
 			console.log("checkInput : " + e);
 		}
-	},
+	}
 	// überprüft ob bestimmte Bedingungen zutreffen,wegen den Schleifen
-	checkChar: function(position){
+	function checkChar(position){
 		try{
 			var chr = userInput.charAt(position);
 			if(chr == '['){
@@ -93,9 +91,9 @@ var BrainFuckInterpreter = {
 		}catch(e){
 			console.log("checkChar : " + e);
 		}
-	},
+	}
 	// überprüft jedes einzelne Char auf Brainfuck Keywords
-	charKeyword: function(kchr){
+	function charKeyword(kchr){
 		try{
 			if(isOptionalInput == true){
 				cells[actualCellPosition] = checkCell(kchr.charCodeAt(0));
@@ -125,9 +123,9 @@ var BrainFuckInterpreter = {
 		}catch(e){
 			console.log("charKeyword : " + e);
 		}
-	},
+	}
 	// Setzt alle Variablen wieder auf die Ursprungswerte,ist für einen Neustart erforderlich
-	clearVariables: function(){
+	function clearVariables(){
 		try{
 			cells = [];
 			cellLength = 30000;
@@ -141,6 +139,17 @@ var BrainFuckInterpreter = {
 			console.log("clearVariables : " + e);
 		}
 	}
+
+	//public
+	var retObj = {};
+
+	retObj.start = start;
+
+	function start (){
+		makeInput();
+	}
+	return retObj;
 }
 
-BrainFuckInterpreter.makeInput();
+var bfi = new BrainFuckInterpreter();
+bfi.start();
