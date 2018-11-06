@@ -74,7 +74,7 @@ var BrainFuckInterpreter = function() {
 			var chr = userInput.charAt(position);
 			if(chr == '['){
 				position++;
-				loopCount.push(position);
+				loopCount.push(position); // Position wird gemerkt
 			}
 			else if(chr == ']'){
 				if(cells[actualCellPosition] == 0){
