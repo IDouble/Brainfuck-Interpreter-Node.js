@@ -78,7 +78,7 @@ var BrainFuckInterpreter = function() {
 			}
 			else if(chr == ']'){
 				if(cells[actualCellPosition] == 0){
-					loopCount.pop();
+					loopCount.pop();  // Letzte Position wird vom array loopCount entfernt
 					position++;
 				}else{
 					position = loopCount[loopCount.length-1];
